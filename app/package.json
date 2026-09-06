@@ -1,0 +1,21 @@
+{
+  "name": "market-intelligence-platform",
+  "version": "1.0.0",
+  "description": "Единый продукт Market Intelligence Platform (объединение ZOD + LootFarm Platform)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "start:offline": "node server.js --offline",
+    "collect": "node scripts/collect.js --live",
+    "collect:offline": "node scripts/collect.js --offline",
+    "seed": "node scripts/collect.js --offline",
+    "import-history": "node scripts/import-history.js",
+    "test": "node --test",
+    "smoke": "node scripts/smoke.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}

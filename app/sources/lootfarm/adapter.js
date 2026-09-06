@@ -1,0 +1,52 @@
+"use strict";
+
+/**
+ * LootFarm adapter entry point (standard adapter contract).
+ *
+ *   collect(config, fx, timestamp, opts) -> { ok, parsedCount, normalized, collectedAt, note }
+ *
+ * opts:
+ *   - forceFixture (bool): if true, always read the saved fixture.
+ *   - candidates (array): ignored by LootFarm (full catalog source).
+ */
+
+const { parseLootFarm } = require("./parser");
+const { normalizeLootFarm } = require("./normalizer");
+const lootfarmFetch = require("./fetch");
+const path = require("node:path");
+const fs = require("node:fs");
+
+const FIXTURE = path.join(__dirname, "..", "..", "data", "fixtures", "lootfarm-latest.json");
+
+async function collect(config, fx, timestamp, { forceFixture = false } = {}) {
+  const c = config.sources.lootfarm;
+  const note = {};
+  let raw;
+  try {
+    if (forceFixture) throw new Error("offline mode: fixture");
+    raw = await lootfarmFetch.fetchRawCatalog({ url: c.url, timeoutMs: c.timeoutMs, retries: c.retries });
+    note.source = "live";
+  } catch (error) {
+    note.error = error.message;
+    if (c.preferFixtureIfUnavailable) {
+      try {
+        raw = JSON.parse(fs.readFileSync(FIXTURE, "utf8"));
+        note.source = "fixture";
+        note.fixture = true;
+      } catch (e2) {
+        return { ok: false, reason: note.error, parsed: [], normalized: [] };
+      }
+    } else {
+      return { ok: false, reason: note.error, parsed: [], normalized: [] };
+    }
+  }
+  const parsed = parseLootFarm(raw);
+  const normalized = normalizeLootFarm(parsed, {
+    fxRate: fx.rate,
+    baseCurrency: config.currency.base,
+    timestamp,
+  });
+  return { ok: true, parsedCount: parsed.length, normalized, collectedAt: timestamp, note };
+}
+
+module.exports = { collect };

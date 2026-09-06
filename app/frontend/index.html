@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Market Intelligence Platform</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand" onclick="location.hash='#/dashboard'">
+        <span class="brand__logo">◫</span>
+        <span class="brand__name">Market Intelligence Platform</span>
+      </div>
+      <nav class="nav" id="nav"></nav>
+      <div class="topbar__status" id="topbar-status">—</div>
+    </div>
+  </header>
+
+  <main class="page" id="page">
+    <div class="loading">Загрузка…</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>Демонстрация на реальных данных. Монетарные значения — не гарантия исполнения.</span>
+      <span id="footer-run">—</span>
+    </div>
+  </footer>
+
+  <script src="/js/sort.js"></script>
+  <script src="/js/udata-sort-state.js"></script>
+  <script src="/js/widgets.js"></script>
+  <script src="/js/udata.js"></script>
+  <script src="/js/core.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
