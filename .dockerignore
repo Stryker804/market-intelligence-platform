@@ -1,0 +1,12 @@
+.git
+.gitignore
+node_modules
+npm-debug.log
+*.log
+
+app/data/history/
+app/data/state/
+app/data/raw/
+app/data/opportunities/
+app/data/_backup/
+app/data/fx.json
